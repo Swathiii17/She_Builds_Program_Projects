@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Expense Calculator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #dbeafe, #f0fdf4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #64748b;
+        }
+
+        .income-box {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .expense-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        button {
+            border: none;
+            padding: 13px 20px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .add-btn {
+            width: 100%;
+            background: #2563eb;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .expense-section {
+            margin-top: 30px;
+        }
+
+        h2 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            font-size: 21px;
+        }
+
+        #expenseList {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #expenseList li {
+            background: #f8fafc;
+            padding: 14px 16px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .empty {
+            justify-content: center !important;
+            color: #94a3b8 !important;
+        }
+
+        .summary-section {
+            margin-top: 30px;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .card {
+            padding: 20px;
+            border-radius: 14px;
+            text-align: center;
+            background: #f8fafc;
+        }
+
+        .card h3 {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: 23px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .summary-btn {
+            width: 100%;
+            margin-top: 18px;
+            background: #16a34a;
+            color: white;
+        }
+
+        .summary-btn:hover {
+            background: #15803d;
+        }
+
+        @media (max-width: 650px) {
+
+            .container {
+                padding: 22px;
+            }
+
+            .expense-form {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: span 1;
+            }
+
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <h1>💰 Personal Expense Calculator</h1>
+            <p>Track your income, expenses and savings easily</p>
+        </div>
+
+        <!-- Income -->
+        <div class="income-box">
+
+            <label for="income">Monthly Income (₹)</label>
+
+            <input
+                type="number"
+                id="income"
+                placeholder="Enter your monthly income"
+            >
+
+        </div>
+
+
+        <!-- Expense Form -->
+        <div class="expense-form">
+
+            <div class="form-group">
+                <label for="expenseName">Expense Name</label>
+
+                <input
+                    type="text"
+                    id="expenseName"
+                    placeholder="Eg: Groceries"
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="expenseAmount">Amount (₹)</label>
+
+                <input
+                    type="number"
+                    id="expenseAmount"
+                    placeholder="Eg: 2000"
+                >
+            </div>
+
+        </div>
+
+
+        <button class="add-btn" onclick="addExpense()">
+            + Add Expense
+        </button>
+
+
+        <!-- Expense List -->
+        <div class="expense-section">
+
+            <h2>📋 Your Expenses</h2>
+
+            <ul id="expenseList">
+
+                <li class="empty">
+                    No expenses added yet.
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <!-- Summary -->
+        <div class="summary-section">
+
+            <h2>📊 Summary</h2>
+
+            <div class="summary-cards">
+
+                <div class="card">
+                    <h3>Total Income</h3>
+                    <p id="totalIncome">₹0</p>
+                </div>
+
+                <div class="card">
+                    <h3>Total Expenses</h3>
+                    <p id="totalExpense">₹0</p>
+                </div>
+
+                <div class="card">
+                    <h3>Savings</h3>
+                    <p id="savings">₹0</p>
+                </div>
+
+            </div>
+
+
+            <button class="summary-btn" onclick="showSummary()">
+                Calculate Summary
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        let totalExpense = 0;
+        let expenses = [];
+
+
+        // Add Expense
+        function addExpense() {
+
+            let name =
+                document.getElementById("expenseName").value.trim();
+
+            let amount =
+                Number(document.getElementById("expenseAmount").value);
+
+
+            if (name === "" || amount <= 0) {
+
+                alert("Please enter valid expense details.");
+
+                return;
+            }
+
+
+            totalExpense += amount;
+
+
+            expenses.push({
+                name: name,
+                amount: amount
+            });
+
+
+            displayExpenses();
+
+
+            document.getElementById("expenseName").value = "";
+            document.getElementById("expenseAmount").value = "";
+
+        }
+
+
+        // Display Expenses
+        function displayExpenses() {
+
+            let list =
+                document.getElementById("expenseList");
+
+
+            list.innerHTML = "";
+
+
+            expenses.forEach(function(expense) {
+
+                let item =
+                    document.createElement("li");
+
+
+                item.innerHTML = `
+                    <span>
+                        <strong>${expense.name}</strong>
+                    </span>
+
+                    <strong>₹${expense.amount}</strong>
+                `;
+
+
+                list.appendChild(item);
+
+            });
+
+        }
+
+
+        // Calculate Summary
+        function showSummary() {
+
+            let income =
+                Number(document.getElementById("income").value);
+
+
+            if (income <= 0) {
+
+                alert("Please enter your monthly income.");
+
+                return;
+            }
+
+
+            let savings = income - totalExpense;
+
+
+            document.getElementById("totalIncome").innerText =
+                "₹" + income;
+
+
+            document.getElementById("totalExpense").innerText =
+                "₹" + totalExpense;
+
+
+            document.getElementById("savings").innerText =
+                "₹" + savings;
+
+        }
+
+    </script>
+
+</body>
+</html>
